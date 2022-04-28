@@ -5,7 +5,7 @@
 		<Params name="ScreenSetupParams"/>
 		<CurrentCompositionTextureSize JorisIsLiev="true" width="740" height="740"/>
 		<screens>
-			<DmxScreen tal:repeat="screen screens" name="" uniqueId="" LumiverseId="" tal:attributes="uniqueId uuid(); name screen.name; LumiverseId screen.i">
+			<DmxScreen tal:repeat="screen screens" name="" uniqueId="" LumiverseId="" tal:attributes="uniqueId uuid(); name screen.name; LumiverseId screen.id">
 				<Params name="Params">
 					<Param name="Name" T="STRING" default="" value="" tal:attributes="value screen.name"/>
 					<Param name="Enabled" T="BOOL" default="1" value="1"/>
@@ -82,7 +82,7 @@
 					</ScreenGuide>
 				</guides>
 				<layers>
-					<DmxSlice uniqueId="" tal:attributes="uniqueId uuid()">
+					<DmxSlice uniqueId="" tal:repeat="device screen.devices" tal:attributes="uniqueId uuid()">
 						<Params name="Common">
 							<Param name="Name" T="STRING" default="Layer" value="1 - 450 LED BAR 150"/>
 							<Param name="Enabled" T="BOOL" default="1" value="1"/>
@@ -92,7 +92,7 @@
 							<Param name="Input Opacity" T="BOOL" default="1" value="1"/>
 							<Param name="Input Bypass/Solo" T="BOOL" default="1" value="1"/>
 							<ParamChoice name="Fixture" T="STRING" default="" value="6c8f6b27c0114480aca1ca04d6f760e3" storeChoices="0"/>
-							<ParamRange name="Start Channel" T="DOUBLE" default="1" value="1">
+							<ParamRange name="Start Channel" T="DOUBLE" default="1" value="1" tal:attributes="value device.channel">
 								<PhaseSourceStatic name="PhaseSourceStatic" phase="0"/>
 								<BehaviourDouble name="BehaviourDouble"/>
 								<ValueRange name="defaultRange" min="1" max="512"/>
@@ -139,8 +139,8 @@
 								<ValueRange name="startStop" min="-1" max="1"/>
 							</ParamRange>
 						</Params>
-						<InputRect orientation="0" tal:attributes="orientation screen.angle">
-							<v x="" y="" tal:repeat="point screen.rect" tal:attributes="x point.x; y point.y"/>
+						<InputRect orientation="0" tal:attributes="orientation device.angle">
+							<v x="" y="" tal:repeat="point device.rect" tal:attributes="x point.x; y point.y"/>
 						</InputRect>
 						<OutputRect orientation="0">
 							<v x="-0.5" y="-0.5"/>
@@ -152,7 +152,7 @@
 							<Fixture name="Fixture" uuid="6e00c96c15d149a6b80e3b30cb8251e8" fixtureName="">
 								<Params name="Params">
 									<ParamFixturePixels storage="0" name="Pixels">
-										<ParamRange name="Width" T="DOUBLE" default="1" value="150">
+										<ParamRange name="Width" T="DOUBLE" default="1" value="" tal:attributes="value device.pixelCount">
 											<PhaseSourceStatic name="PhaseSourceStatic" phase="0.29158512720156554154"/>
 											<BehaviourDouble name="BehaviourDouble"/>
 											<ValueRange name="defaultRange" min="1" max="512"/>
@@ -184,7 +184,7 @@
 				<OutputDevice>
 					<OutputDeviceDmx name="Lumiverse" deviceId="Lumiverse" idHash="" tal:attributes="idHash uuid()">
 						<Params name="Params">
-							<ParamRange name="Framerate" T="DOUBLE" default="30" value="30">
+							<ParamRange name="Framerate" T="DOUBLE" default="30" value="15">
 								<PhaseSourceStatic name="PhaseSourceStatic" phase="0.74358974358974361252"/>
 								<BehaviourDouble name="BehaviourDouble"/>
 								<ValueRange name="defaultRange" min="1" max="40"/>
@@ -202,14 +202,14 @@
 						</Params>
 						<DmxOutputParams name="Params">
 							<Param name="TargetIP" default="TT_DISABLED" value="" tal:attributes="value screen.ip"/>
-							<ParamRange name="Subnet" T="DOUBLE" default="0" value="0">
+							<ParamRange name="Subnet" T="DOUBLE" default="0" value="0" tal:attributes="value screen.subnet">
 								<PhaseSourceStatic name="PhaseSourceStatic" phase="0"/>
 								<BehaviourDouble name="BehaviourDouble"/>
 								<ValueRange name="defaultRange" min="0" max="15"/>
 								<ValueRange name="minMax" min="0" max="15"/>
 								<ValueRange name="startStop" min="0" max="15"/>
 							</ParamRange>
-							<ParamRange name="Universe" T="DOUBLE" default="0" value="0">
+							<ParamRange name="Universe" T="DOUBLE" default="0" value="0" tal:attributes="value screen.universe">
 								<PhaseSourceStatic name="PhaseSourceStatic" phase="0"/>
 								<BehaviourDouble name="BehaviourDouble"/>
 								<ValueRange name="defaultRange" min="0" max="15"/>
